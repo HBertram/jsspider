@@ -1,0 +1,110 @@
+<html>
+    <head>
+        <title>在线蜘蛛纸牌</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+        <meta charset="gbk"> 
+        <script type="application/x-javascript" src = "./js/draw.js"></script>
+        <script type="application/x-javascript" src = "./js/jquery-3.3.1.min.js"></script>
+        <script type="application/x-javascript" src = "./js/hideAd.js"></script>
+        <script type="application/x-javascript" src = "./js/play.js"></script>
+        <script type="application/x-javascript" src = "./js/AI.js"></script>
+        <style>
+            .mid-block {
+                position:absolute;
+                width:260px;
+                height:120px;
+                border:1px solid black;
+                left:0;
+                right:0;
+                margin:auto;
+                top:35%;
+                background-color:#009966;
+            }
+            .bot-block {
+                position:absolute;
+                width:130px;
+                height:60px;
+                border:1px solid black;
+                margin: auto;
+                left:0;
+                right:0;
+                bottom: 10px;
+                background-color:#009966;
+            }
+            .bot-block:hover{
+                cursor: pointer;
+            }
+            #success p {
+                margin: 8px 0 8px 0;
+            }
+        </style>
+        <script>
+            $(function(){
+                    var bindEventListeners = function() {
+                    $canvas.bind('touchstart', play.touchstart)
+                    $canvas.bind('touchmove', play.touchmove)
+                    $canvas.bind('touchend', play.touchend)
+                    $canvas.mousedown(play.mousedown);
+                    $canvas.mouseup(play.mouseup);
+                    $canvas.mousemove(play.mousemove);
+                    $(window).keydown(function(event){if(event.which==90){play.undo()}});
+                    }
+                factor = 2;
+                canvas = document.createElement('canvas');
+                context2D = canvas.getContext('2d');
+                $canvas = $(canvas);
+                $canvas.css('background-image', 'url("./img/background.png")');
+                $canvas.css('z-index', '-99');
+                canvas.innerText = '不支持canvas标签';
+                
+                $canvas.css('width', '100%');
+                $canvas.css('height', '100%');
+                $('#fullscreen').append(canvas);
+                bindEventListeners();
+                play.start();
+            })
+        </script>
+    </head>
+    <body style='margin:0px;'>
+        
+    
+    <div id = 'fullscreen'>
+        <div id="setDiff" class='mid-block' hidden="hidden">
+            <div style="margin:10px 0 0 20px;">
+            <table style="width:260px;height:60px">
+                <tbody>
+                <tr>
+                    <td><input type="radio" name="diff" value="1" checked>1花色</td>
+                    <td><input type="radio" name="diff" value="2">2花色
+                </td>
+                </tr>
+                    <tr><td><input type="radio" name="diff" value="4">4花色</td>
+                    <td><input type="radio" name="diff" value="8">8花色</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            
+            <div style="margin:10px 0 0 80px">
+            <button onclick="play.confirmDiff()">确定</button>
+            <button onclick="play.cancelDiff()">取消</button>
+            </div>
+        </div>
+        <div class = 'bot-block' onclick='play.AIHint()'>
+                <div style='margin:20px 0 0 45px'>提示</div>
+        </div>
+        
+        <div id="success" hidden='hidden' class='mid-block'>
+                <center><strong>恭喜你获得胜利</strong>
+                <p id='time'>本次用时共计时分秒</p>
+                <p id='message'>作弊n次 撤销n次</p>
+                <button onclick="play.confirmDiff()">再来一局</button>
+            </center>
+        </div>
+        <button style="position:absolute;left:20px; bottom:20px;" onclick="play.onCheat()">作弊</button>
+        <button style="position:absolute;left:80px; bottom:20px;" onclick = "play.undo()">撤销</button>
+        <button style="position:absolute;left:140px; bottom:20px;" onclick = "play.startNew()">重来</button>
+        <button style="position:absolute;left:200px; bottom:20px;" onclick = "draw.fullScreen()">全屏</button>
+    </div>
+    </body>
+</html>
